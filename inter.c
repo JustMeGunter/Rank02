@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include <unistd.h>
 
 int	r_strchr(char *str, char c, int i)
 {
-	while (--i >= 0)  
+	while (--i >= 0)
 		if (str[i] == c)
 			return (0);
 	return (1);
@@ -11,8 +10,8 @@ int	r_strchr(char *str, char c, int i)
 
 void	inter(char *str1, char *str2)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
