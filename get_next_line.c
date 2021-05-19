@@ -6,7 +6,7 @@
 /*   By: acrucesp <acrucesp@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 13:01:57 by acrucesp          #+#    #+#             */
-/*   Updated: 2021/05/19 14:28:45 by acrucesp         ###   ########.fr       */
+/*   Updated: 2021/05/19 17:51:31 by acrucesp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,58 @@ char	*ft_strjoin(char *str1, char *str2)
 	return (ret);
 }
 
+char	*ft_strdup(char *str)
+{
+	char	*ret;
+	int	i;
+
+	i = 0;
+	if (!str)
+	{
+		ret = malloc(sizeof(char) * 1);
+		*ret = '\0';
+		return (ret);
+	}
+	else
+		ret = malloc(sizeof(char) * ft_strlen(str) + 1);
+	while (str[i])
+	{
+		ret[i] = str[i];
+		i++;
+	}
+	ret[i] = '\0';
+	return (ret);
+}
+
 int	get_next_line(char **line)
 {
 	char	buff[2];
-	char	*ret;
 	char	*aux;
+	int		sz;
 
 	buff[1] = '\0';
-	ret = 0;
-	while (read(0, buff, 1) && buff[0] != '\n')
+	*line = 0;
+	sz = read(0, buff, 1);
+	while (sz && buff[0] != '\n')
 	{
-		if (!ret)
-			ret = ft_strjoin(buff, "");
+		if (!*line)
+			*line = ft_strdup(buff);
 		else
 		{
-			aux = ft_strjoin(ret, buff);
-			free(ret);
-			ret = ft_strjoin(aux, "");
+			aux = ft_strjoin(*line, buff);
+			free(*line);
+			*line = ft_strdup(aux);
 			free(aux);
 			aux = 0;
 		} 
+		sz = read(0, buff, 1);
 	}
-	if (ret)
-	{
-		*line = ret;
+	if (sz < 0)
+		return (-1);
+	if (!*line && buff[0] == '\n')
+		*line = ft_strdup(""); 
+	if (sz > 0)
 		return (1);
-	}
 	else
 		return (0);
 }
